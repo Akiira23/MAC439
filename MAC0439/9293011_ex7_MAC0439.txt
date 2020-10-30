@@ -1,0 +1,59 @@
+--a)
+SELECT nomeA 
+FROM agricultor 
+WHERE cidadea = 'Mogi das Cruzes';
+
+--b)
+SELECT * FROM produto 
+WHERE (nomep >= 'a' AND nomep <= 'e') 
+OR (precoquilo >= 2.00 AND precoquilo <= 3.00);
+
+--c)
+SELECT codp FROM entrega, agricultor
+WHERE dataentrega < NOW() 
+AND agricultor.nomea LIKE '% Bandeira';
+
+--d)
+SELECT DISTINCT restaurante.nomer FROM entrega, restaurante, (SELECT codp FROM
+								produto WHERE nomep = 'cebola') ceb
+WHERE entrega.codp = ceb.codp AND entrega.codr = restaurante.codr;
+
+--e)
+(SELECT coda FROM entrega, (SELECT codp FROM
+				produto WHERE nomep = 'cebola') ceb
+WHERE entrega.codp = ceb.codp)
+INTERSECT
+(SELECT coda FROM entrega, (SELECT codp FROM
+				produto WHERE nomep = 'batata') bat
+WHERE entrega.codp = bat.codp);
+
+--f)
+(SELECT coda FROM entrega, (SELECT codp FROM
+				produto WHERE nomep = 'cebola') ceb
+WHERE entrega.codp = ceb.codp)
+EXCEPT
+(SELECT coda FROM entrega, (SELECT codp FROM
+				produto WHERE nomep = 'batata') bat
+WHERE entrega.codp = bat.codp);
+
+--g)
+SELECT entrega.coda, entrega.codp, entrega.codr FROM entrega, (SELECT codr, cidader FROM
+								restaurante) cidaderest,
+ 							(SELECT coda, cidadea FROM
+								agricultor) cidadeagr 
+WHERE cidaderest.cidader = cidadeagr.cidadea AND 
+cidaderest.codr = entrega.codr AND 
+cidadeagr.coda = entrega.coda;
+
+--h)
+(SELECT entrega.codr, prod.codp FROM entrega, (SELECT codp FROM
+				produto) prod)
+EXCEPT
+(SELECT entrega.codr, prod.codp FROM entrega, (SELECT codp FROM
+				produto) prod
+WHERE entrega.codp = prod.codp);
+
+--i)
+SELECT DISTINCT prod.nomep FROM entrega, (SELECT codp, nomep FROM
+				produto) prod
+WHERE entrega.codp = prod.codp;

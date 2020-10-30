@@ -1,0 +1,28 @@
+>>> Baixe o driver JDBC para o PostgreSQL de: 
+
+https://jdbc.postgresql.org/download.html
+https://jdbc.postgresql.org/download/postgresql-9.4-1205.jdbc41.jar  --> para Java 7
+https://jdbc.postgresql.org/download/postgresql-9.4-1205.jdbc42.jar  --> para Java 8
+
+>>> Para executar o exemplo (considerando que você está no diretório com o 
+    código fonte e ele contém também o jar do driver JDBC, e a versão de Java usada é a 8):
+
+$ javac ExemploJDBC.java
+$ java -cp .:./postgresql-9.4-1205.jdbc42.jar ExemploJDBC
+
+Observações: 
+1) Antes de rodar o javac, edit o arquivo .java corrigindo as informações de conexão para as suas informações de BD, usuário e senha.
+(a partir da linha 32 do arquivo .java: 
+	String url = "jdbc:postgresql://postgresql.linux.ime.usp.br:5432/SEU_USUARIO";
+)
+
+2) Para o exemplo funcionar, você precisa ter o schema aula21 (7) criado no seu BD.  
+
+------------------
+
+3) Para rodar o exemplo no Java versão 6 (que é a versão usada na rede Linux), use uma versão mais antiga de driver JDBC para o PostgreSQL:
+https://jdbc.postgresql.org/download/postgresql-9.4-1205.jdbc4.jar  --> para Java 6
+
+Nesse caso, os comandos para compilação e execução ficam:
+$ javac ExemploJDBC.java
+$ java -cp .:./postgresql-9.4-1205.jdbc4.jar ExemploJDBC

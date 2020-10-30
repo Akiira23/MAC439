@@ -1,0 +1,16 @@
+>>> Para executar o exemplo, abra um terminal e (considerando que você está no diretório com o código fonte e ele contém também o arquivo ".jar" do driver JDBC) execute:
+
+$ javac ExemploJDBC.java
+$ java -cp .:./postgresql-42.2.14.jar ExemploJDBC
+
+Observações: 
+1) Antes de rodar o javac, edit o arquivo .java corrigindo as informações de conexão para as suas informações de BD, usuário e senha.
+(a partir da linha 32 do arquivo .java: 
+	String url = "jdbc:postgresql://postgresql.linux.ime.usp.br:5432/SEU_USUARIO";
+)
+
+2) Para o exemplo funcionar, você precisa ter as tabelas do exemplo criadas no seu BD (o script de criação está no arquivo "criacao_tabelas_exemplo.sql").  
+
+3) O arquivo incluído no classpath no comando acima é o driver JDBC que possibilita a conexão de um programa Java com o PostgreSQL. Ele é para Java versão 8 ou superior.
+Caso você esteja usando uma versão mais antiga de Java, baixe a versão apropriada do driver de https://jdbc.postgresql.org/download.html.
+

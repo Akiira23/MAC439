@@ -1,0 +1,49 @@
+db.equipamentos.find(
+		{"preco": {$gte: 200, 
+			$lte: 300}},
+		{"modelo":1, "tipo":1, "preco":1});
+
+
+db.equipamentos.find(
+		{$or:[{"tipo": "pc"}, 
+			{"tipo": "impressora"}]},
+		{"fabricante":1});
+
+
+db.equipamentos.find(
+		{"tipo": "pc", 
+		$or:[{"cd": "6x"}, 
+			{"cd": "8x"}], 
+		"preco": {$lt: 2000}},
+		{"modelo":1, "velocidade":1, "hd":1}).
+		sort({"velocidade": -1, "hd": -1});
+
+
+db.equipamentos.find(
+		{"fabricante": {$regex: '^([A-E])', $options: 'i'}}, 
+		{"modelo":1}).
+		sort({"fabricante": 1});
+
+
+db.equipamentos.find(
+		{"colorida": 1, 
+		"tipo_impressao": {$not: {$eq: "ink-jet"}}},
+		{"fabricante": 1, "modelo": 1});
+
+
+db.equipamentos.find(
+		{},
+		{"fabricante": 1, "modelo": 1, "preco": 1});
+
+
+db.equipamentos.find(
+		{$and: [{"tipo":{$eq: "pc"}}, 
+			{"tipo":{$eq: "impressora"}}]},
+		{"fabricante": 1});
+
+db.equipamentos.find(
+		{$and: [{$or: [{"tipo":{$eq: "pc"}}, 
+			{"tipo":{$eq: "laptop"}}], 
+		"price": {$gt: 2000}}, 
+			{"tipo": "impressora", $not: {"price": {$gt: 300}}}]},
+		{"fabricante": 1});

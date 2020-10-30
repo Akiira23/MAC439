@@ -1,0 +1,65 @@
+--a)
+
+SELECT nomer, SUM(qtdequilos)
+FROM entrega JOIN restaurante
+ON entrega.codr = restaurante.codr
+WHERE nomer = 'RU-USP'
+GROUP BY nomer;
+
+--b)
+
+SELECT cidadea
+FROM agricultor
+GROUP BY cidadea
+HAVING COUNT(*) >= 2;
+
+--c)
+
+SELECT codp, AVG (qtdequilos)
+FROM entrega
+WHERE codp NOT IN (SELECT codp
+				FROM entrega
+				WHERE qtdequilos <= 20)
+GROUP BY codp;
+
+--d)
+
+SELECT nomep, SUM(qtdequilos)
+FROM entrega JOIN produto
+ON entrega.codp = produto.codp
+GROUP BY nomep
+HAVING SUM(qtdequilos) >= ALL (SELECT SUM(qtdequilos) 
+							  	FROM entrega JOIN produto
+								ON entrega.codp = produto.codp
+								GROUP BY nomep);
+
+--e)
+
+SELECT nomer
+FROM entrega JOIN restaurante
+ON entrega.codr = restaurante.codr
+WHERE dataentrega = (SELECT MAX(dataentrega)
+					FROM entrega);
+
+--f)
+
+--g)
+
+SELECT entrega.coda, entrega.codp, entrega.codr
+FROM entrega INNER JOIN restaurante ON entrega.codr = restaurante.codr
+INNER JOIN agricultor ON entrega.coda = agricultor.coda
+WHERE cidadea <> cidader;
+
+--h)
+
+SELECT nomep, SUM(qtdequilos)
+FROM entrega RIGHT OUTER JOIN produto
+ON entrega.codp = produto.codp
+GROUP BY nomep
+ORDER BY SUM(qtdequilos) DESC;
+
+--i)
+
+SELECT nomep, nomea
+FROM entrega FULL OUTER JOIN produto ON entrega.codp = produto.codp
+FULL OUTER JOIN agricultor ON entrega.coda = agricultor.coda;

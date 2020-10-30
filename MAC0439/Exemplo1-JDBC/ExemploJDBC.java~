@@ -1,0 +1,100 @@
+import java.io.*;
+import java.sql.*;
+import java.util.Properties;
+
+public class ExemploJDBC {
+ 
+	public static void main(String[] argv) throws SQLException, IOException {
+ 
+		System.out.println("-------- PostgreSQL JDBC - Teste de Conexão ------------");
+ 
+		try {
+
+			Class.forName("org.postgresql.Driver");
+
+		} catch (ClassNotFoundException e) {
+ 
+			System.out.println("Onde esta o seu driver PostgreSQL JDBC? "
+					+ "Inclua-o em seu library path!");
+			e.printStackTrace();
+			return;
+		}
+ 
+		System.out.println("Driver PostgreSQL JDBC registrado!");
+ 
+		Connection conexao = null;
+ 
+		Properties props = new Properties();
+		props.setProperty("ssl","true");
+		props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
+
+		// MODIFIQUE O VALOR DESTES PARAMETROS COM OS DADOS DO SEU USUARIO
+		String url = "jdbc:postgresql://postgresql.linux.ime.usp.br:5432/kellyrb";
+		props.setProperty("user","kellyrb");
+		props.setProperty("password","hg4arb$");
+		
+		Connection conn = DriverManager.getConnection(url, props);
+
+		try {
+			conexao = DriverManager.getConnection(url, props);
+ 
+		} catch (SQLException e) {
+ 
+			System.out.println("Conexao falhou! Veja mais detalhes sobre o erro a seguir.");
+			e.printStackTrace();
+			return;
+		}
+ 
+		if (conexao != null) {
+			System.out.println("A conexao com o banco de dados foi estabelecida com sucesso!");
+		} else {
+			System.out.println("Nao foi possivel estabelecer conexao com o banco de dados!");
+			return;
+		}	
+
+
+		int tamanho_ram, modelo, velocidade;
+		double tela, preco;
+ 		char continua = 's';
+		ResultSet resp;	
+			
+
+		try {		
+			Statement stat1 = conexao.createStatement(); 
+			stat1.execute("set search_path to aula21"); 
+ 					
+			PreparedStatement stat2 = conexao.prepareStatement(
+				"SELECT modelo, velocidade, tela, preco FROM laptop WHERE ram = ? ");
+
+			do {
+				System.out.println("Digite o tamanho da RAM dos laptops a serem listados (ex., 64): ");
+				tamanho_ram = Integer.parseInt(System.console().readLine());
+				stat2.clearParameters();
+				stat2.setInt(1, tamanho_ram);
+				resp = stat2.executeQuery();
+			
+				System.out.println("----------------------------------------");
+				System.out.println("Laptops com a memoria ram especificada: ");
+				System.out.println("MODELO\t\t VELOCIDADE\t\t TELA\t\t PRECO");
+			
+				while (resp.next()) {
+					modelo = resp.getInt("modelo");
+					velocidade = resp.getInt("velocidade");
+					tela = resp.getDouble("tela");
+					preco = resp.getDouble("preco");
+					System.out.println(modelo + "\t\t " + velocidade + "\t\t" + tela + "\t\t" + preco);
+				}			
+				System.out.println("----------------------------------------");
+
+				System.out.println("Deseja listar outros laptops? <s|n> ");
+				continua = System.console().readLine().charAt(0);
+
+			} while (continua == 's');
+		}
+		catch (SQLException e) {
+			System.out.println("Houve um erro no acesso ao BD! Veja mais detalhes sobre o erro a seguir.");
+			e.printStackTrace();
+			return;
+		}
+	}
+}

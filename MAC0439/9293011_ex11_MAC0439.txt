@@ -1,0 +1,47 @@
+#a)
+
+MATCH (actor:Person)-[:ACTED_IN]->(year:Movie)
+RETURN min(year.released), actor.name
+
+#b)
+
+MATCH (actor:Person)
+ -[:ACTED_IN]->(movie:Movie)<-[:DIRECTED]-
+ (director:Person),
+ (actor1:Person)
+ -[:ACTED_IN]->(movie:Movie)<-[:ACTED_IN]-
+ (actor2:Person),
+ (actor3:Person)
+ -[:ACTED_IN]->(movie:Movie)<-[:PRODUCED]-
+ (producer:Person),
+   (actor4:Person)
+ -[:ACTED_IN]->(movie:Movie)<-[:WROTE]-
+ (writer:Person)
+RETURN DISTINCT actor.name, director.name, actor2.name, producer.name, writer.name;
+
+#c)
+
+MATCH (director:Person)
+ -[:DIRECTED]->(movie1:Movie),
+(director:Person)
+ -[:DIRECTED]->(movie2:Movie)
+WHERE NOT exists( (director)-[:ACTED_IN]->(movie1))
+RETURN DISTINCT director.name
+
+#d)
+
+MATCH (tom:Person {name:"Tom Hanks"})
+ -[:ACTED_IN]->(movie:Movie),
+ (sugest:Person)
+ -[:ACTED_IN]->(movie)
+ RETURN sugest.name, count(sugest.name)
+ ORDER BY count(sugest.name) DESC
+
+#e)
+
+MATCH (actor:Person)
+ -[:ACTED_IN]->(movie:Movie),
+ (jack:Person {name:"Jack Nicholson"})
+ WHERE NOT exists((jack)-[:ACTED_IN]->(movie))
+ RETURN actor.name, count(actor.name)
+ ORDER BY count(actor.name) DESC

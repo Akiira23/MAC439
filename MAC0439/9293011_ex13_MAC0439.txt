@@ -1,0 +1,9 @@
+F1) Antes da inserção em ItemPedido, o Trigger faz para cada linha, uma verificação que retorna NULL se o boleto desse pedido foi pago ou se a quantidade em estoque do pedido é igual a 0. 
+Se nao, se a quantidade em estoque for menor que a quantidade pedida, a quantidade pedida recebe a quantidade em estoque. Aqui também é atualizado a quantidade desse livro em estoque, subtraindo a quantidade em estoque pela quantidade pedida.
+
+F2) Antes de uma atualização na qtde em ItemPedido, o Trigger faz para cada linha, uma verificação que retorna NULL se o boleto desse pedido foi pago ou se a quantidade pedida nova for maior que a antiga e a quantidade em estoque desse livro for 0.
+Se nao, se a quantidade em estoque < (a quantidade pedida nova - a velha), a quantidade pedida nova é alterada para (a quantidade velha + a quantidade em estoque). E também é atualizada a quantidade em estoque desse livro, (somando a quantidade em estoque + a quantidade pedida velha - a quantidade pedida nova).
+
+F3) Depois da inserção em ItemPedido, o Trigger faz para cada linha, a atualização do preço total do pedido, fazendo (preco total + (preco do livro * a quantidade do pedido)).
+
+F4) Depois da atualização na qtde em ItemPedido, o Trigger faz para cada linha, é atualizado o preço total do pedido fazendo, (preco total + (preco do livro * (quantidade pedida nova - velha))).
